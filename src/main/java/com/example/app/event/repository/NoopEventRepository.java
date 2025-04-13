@@ -2,6 +2,7 @@ package com.example.app.event.repository;
 
 import static com.example.app.event.mock.MockEvent.EVENT_ID_WITHOUT_LOCATION;
 import static com.example.app.event.mock.MockEvent.EVENT_ID_WITH_LOCATION;
+import static com.example.app.event.mock.MockEvent.EVENT_ID_WITH_LOCATION_TENNIS;
 
 import com.example.app.event.mock.MockEvent;
 import com.example.app.event.model.Event;
@@ -18,7 +19,9 @@ public class NoopEventRepository {
       return Mono.just(MockEvent.getMockEventWithLocation());
     } else if(id.equals(EVENT_ID_WITHOUT_LOCATION)) {
       return Mono.just(MockEvent.getMockEventWithoutLocation());
-    } else {
+    } else if(id.equals(EVENT_ID_WITH_LOCATION_TENNIS)) {
+      return Mono.just(MockEvent.getMockEventWithLocationTennis());
+    }else {
       return Mono.empty();
     }
   }

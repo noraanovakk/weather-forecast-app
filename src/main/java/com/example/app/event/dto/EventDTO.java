@@ -3,9 +3,11 @@ package com.example.app.event.dto;
 import com.example.app.event.model.Event;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.annotation.Nullable;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.Builder;
@@ -25,12 +27,13 @@ public class EventDTO {
   private String name;
 
   @JsonProperty("startDate")
-  private LocalDateTime startDate;
+  private ZonedDateTime startDate;
 
   @JsonProperty("endDate")
-  private LocalDateTime endDate;
+  private ZonedDateTime endDate;
 
   @JsonProperty("location")
+  @Nullable
   private LocationDTO location;
 
   // might cache the weather data for a while
@@ -41,8 +44,8 @@ public class EventDTO {
     return EventDTO.builder()
         .id(event.getId())
         .name(event.getName())
-        .startDate(LocalDateTime.ofInstant(Instant.parse(event.getStartDate()), ZoneOffset.UTC))
-        .endDate(LocalDateTime.ofInstant(Instant.parse(event.getEndDate()), ZoneOffset.UTC))
+        .startDate(ZonedDateTime.parse(event.getStartDate()))
+        .endDate(ZonedDateTime.parse(event.getEndDate()))
         .location(Optional.ofNullable(event.getLocation())
             .map(LocationDTO::ofEntity)
             .orElse(null))

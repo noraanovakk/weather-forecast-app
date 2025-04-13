@@ -5,6 +5,9 @@ import com.example.app.event.dto.WeatherDTO;
 import com.example.app.event.repository.NoopEventRepository;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +29,11 @@ public class EventService {
     return eventRepository.findById(eventId)
         .flatMap(event -> Mono.just(EventDTO.ofEntity(event)))
         .flatMap(eventDTO -> {
-          if (eventDTO.getLocation() != null && LocalDateTime.now().isBefore(eventDTO.getStartDate().plusDays(7))) {
+          ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
+          // Check if the event has a location and is within the next 7 days
+          if (eventDTO.getLocation() != null
+              && now.isBefore(eventDTO.getEndDate())
+              && eventDTO.getStartDate().isBefore(now.plusDays(7))) {
             try {
               return weatherService.fetchWeatherData(eventDTO.getLocation().getLatitude(), eventDTO.getLocation().getLongitude())
                   .map(weatherData -> {
