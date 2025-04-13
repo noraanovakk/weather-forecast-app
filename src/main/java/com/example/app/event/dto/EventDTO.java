@@ -1,8 +1,12 @@
 package com.example.app.event.dto;
 
+import com.example.app.event.model.Event;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,5 +37,15 @@ public class EventDTO {
   @JsonProperty("weatherForecast")
   private WeatherDTO weatherForecast;
 
-
+  public static EventDTO ofEntity(Event event) {
+    return EventDTO.builder()
+        .id(event.getId())
+        .name(event.getName())
+        .startDate(LocalDateTime.ofInstant(Instant.parse(event.getStartDate()), ZoneOffset.UTC))
+        .endDate(LocalDateTime.ofInstant(Instant.parse(event.getEndDate()), ZoneOffset.UTC))
+        .location(Optional.ofNullable(event.getLocation())
+            .map(LocationDTO::ofEntity)
+            .orElse(null))
+        .build();
+  }
 }

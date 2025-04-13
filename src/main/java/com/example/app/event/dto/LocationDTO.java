@@ -1,5 +1,6 @@
 package com.example.app.event.dto;
 
+import com.example.app.event.model.Location;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 import lombok.Builder;
@@ -25,4 +26,14 @@ public class LocationDTO {
 
   @JsonProperty("longitude")
   private double longitude;
+
+  public static LocationDTO ofEntity(Location location) {
+    return LocationDTO.builder()
+        .locationId(location.getId())
+        .name(location.getName())
+        .altitude(location.getAltitude())
+        .latitude(location.getLatitude())
+        .longitude(location.getLongitude())
+        .build();
+  }
 }
