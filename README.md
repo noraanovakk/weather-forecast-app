@@ -57,7 +57,7 @@ Returns an `EventDTO` with optional weather information.
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-org/event-weather-api.git
+git clone https://github.com/noraanovakk/event-weather-api.git
 cd event-weather-api
 
 # Build the app
